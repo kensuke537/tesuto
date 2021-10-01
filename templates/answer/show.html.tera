@@ -1,0 +1,70 @@
+{% extends "layout" %}
+
+{% block head %}
+<meta property="og:type"         content="website" />
+<meta property="og:title"        content="Reing" />
+<meta property="og:image"        content="{{ question_image_url | safe }}?{{ unixtime }}" />
+<meta property="og:image:width"  content="256" />
+<meta property="og:image:height" content="256" />
+<meta property="og:description"  content="なんでも質問してください" />
+<meta property="og:url"          content="{{ page_url | safe }}" />
+<meta name="twitter:card" content="summary_large_image">
+{% endblock head %}
+
+{% block main %}
+
+<section class='question-show'>
+    <div  id='app'>
+    {% raw %}
+        <div class='answer-card'>
+            <div class='header'>
+                <div>
+                    <span id='created_at_badge' class='badge' v-cloak>{{ answer.created_at_recognizable }}</span>
+                </div>
+
+                <div>
+                    <a class='tweet-button' target='_blank' v-bind:href='intent_url()'>
+                        <img src='/static/image/twitter_logo.png'>
+                    </a>
+                </div>
+            </div>
+
+            <div id='answer-body' class='answer' v-cloak>{{ answer.body }}</div>
+
+            <div id='question-body' class='question' v-cloak>{{ answer.question.body }}</div>
+        </div>
+
+        <div class='next-prev-question'>
+            <div>
+                <a v-if='next_answer' v-on:click='moveToNext' v-cloak>Next</a>
+            </div>
+
+            <div>
+                <a v-on:click='moveToRandom'>ランダム表示</a>
+            </div>
+
+            <div>
+                <a v-if='prev_answer' v-on:click='moveToPrev' v-cloak>Prev</a>
+            </div>
+        </div>
+    {% endraw %}
+    </div>
+
+    {% set query = "" %}
+    {% include "widget/search_form" %}
+
+    <div class='one-more-question'>
+        <p><small>他の質問を投稿する</small></p>
+        {% include "widget/question_form" %}
+    </div>
+</section>
+
+{% if is_production %}
+<script src="/static/js/vue.min.js"></script>
+{% else %}
+<script src="/static/js/vue.js"></script>
+{% endif %}
+
+<script src='/static/js/move_to_answer.js'></script>
+
+{% endblock main %}
