@@ -1,0 +1,8 @@
+<div class='search-form'>
+    <form action='/search' method='GET' onsubmit='disableForm(this)'>
+        <input type='text' name='query' value='{{ query }}'></input>
+        <button type='submit'>検索</button>
+    </form>
+</div>
+
+<script src='/static/js/disable_double_submit.js'></script>
